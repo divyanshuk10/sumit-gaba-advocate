@@ -21,7 +21,7 @@ class Page(HTMLParser):
         self.tags.append((tag, dict(attrs)))
 
 files = list(root.rglob('*.html'))
-assert len(files) == 9, f'Expected 9 HTML files, found {len(files)}'
+assert len(files) == 10, f'Expected 10 HTML files, found {len(files)}'
 for file in files:
     page = Page()
     page.feed(file.read_text())
@@ -58,7 +58,7 @@ for file in (root/'index.html', root/'contact/index.html'):
 assert (root/'.nojekyll').is_file()
 if args.public and not args.demo:
     sitemap = ET.parse(root/'sitemap.xml')
-    assert len(sitemap.getroot()) == 7
+    assert len(sitemap.getroot()) == 8
     assert 'Disallow: /' not in (root/'robots.txt').read_text()
     assert 'Access and sign-in' not in (root/'privacy/index.html').read_text()
 else:

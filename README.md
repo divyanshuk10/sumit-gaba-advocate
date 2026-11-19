@@ -28,3 +28,11 @@ Create `sumitgabaadvocate/sumitgabaadvocate.github.io`, copy the repository cont
 Phone links and WhatsApp contact, a clearly labelled independent eCourtsIndia profile link, official court resources, custom 404 page, privacy and information-use notices. No API credentials or backend are required. No case feed or performance statistics are imported.
 
 The law-library image is illustrative. Marcellus and Source Sans 3 are self-hosted under the SIL Open Font License; notices are in `dist/assets/licenses/`. No open-source licence is granted for the website code or other assets by this repository.
+
+## Court Holiday Calendar
+
+The `/holiday-calendar/` page displays the original PDF in the browser, with direct Open and Download links. It does not extract, interpret or filter holiday dates.
+
+### Add a future year
+
+Upload a PDF named for its year to `dist/assets/calendars/`, for example `2027.pdf`, and commit it to `main`. The build automatically embeds the highest-numbered year and lists older PDFs as downloads. No code or calendar-data edits are needed. Upload only calendar PDFs intended for publication. The original 2026 PDF is retained unchanged.

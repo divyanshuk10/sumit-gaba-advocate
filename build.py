@@ -4,6 +4,7 @@ import json
 import argparse
 import shutil
 from urllib.parse import urlsplit
+from calendar_page import render_calendar, available_calendars
 
 ROOT = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description='Build the Sumit Gaba static website.')
@@ -24,12 +25,14 @@ OUT.mkdir(parents=True, exist_ok=True)
 if OUT != ROOT / 'dist':
  shutil.copytree(ROOT / 'dist/assets', OUT / 'assets', dirs_exist_ok=True)
 DATA = json.loads((ROOT / 'content.json').read_text())
-nav = [('/', 'Home'),('/profile/', 'Profile'),('/practice-areas/', 'Areas of Practice'),('/resources/', 'Court Resources'),('/contact/', 'Contact & Chambers')]
+CALENDAR_YEAR = available_calendars(ROOT)[0][0]
+nav = [('/', 'Home'),('/profile/', 'Profile'),('/practice-areas/', 'Areas of Practice'),('/resources/', 'Court Resources'),('/holiday-calendar/', 'Holiday Calendar'),('/contact/', 'Contact & Chambers')]
 DESCRIPTIONS = {
  '/': 'Sumit Gaba, Advocate in Delhi. Professional profile, areas of practice, office and court chamber details, and court resources.',
  '/profile/': 'Professional profile of Sumit Gaba, Advocate, ONS Gaba & Associates. Enrolment D/2355/06, with office and court chambers in Delhi.',
  '/practice-areas/': 'An overview of civil, property, family and criminal proceedings handled by the practice of Sumit Gaba, Advocate in Delhi.',
  '/resources/': 'Official court links for the Supreme Court of India, Delhi High Court, Delhi District Courts and eCourts Services.',
+ '/holiday-calendar/': f'View or download the original Delhi High Court calendar for {CALENDAR_YEAR}.',
  '/contact/': 'Contact Sumit Gaba, Advocate. Office in Shubhash Nagar and court chambers at Tis Hazari and Dwarka, with phone and WhatsApp enquiries.',
  '/disclaimer/': 'Information-use notice, external-link terms and professional engagement information for the Sumit Gaba, Advocate website.',
  '/privacy/': 'How this website handles visitor information, contact enquiries and links to external services.',
@@ -48,6 +51,8 @@ def shell(title, body, route='/'):
  if public_page:
   canonical = escape(SITE_URL + route, quote=True)
   metadata = f'''<link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:locale" content="en_IN"><meta property="og:site_name" content="Sumit Gaba — Advocate"><meta property="og:title" content="{page_title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE_URL}/assets/chamber.webp"><meta property="og:image:alt" content="Illustrative law library"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title}"><meta name="twitter:description" content="{description}"><meta name="twitter:image" content="{SITE_URL}/assets/chamber.webp">'''
+ if route == '/holiday-calendar/':
+  metadata += '<link rel="stylesheet" href="/assets/calendar.css">'
  html = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{page_title}</title><meta name="description" content="{description}">
@@ -135,6 +140,7 @@ pages={
  '/profile/':('Professional Profile',pagehead('Profile','Professional Profile','Identity, professional particulars and chamber information.')+profile(True)),
  '/practice-areas/':('Areas of Practice',pagehead('Areas of Practice','Areas of Practice','An overview of civil, criminal, property and family-related proceedings.')+practice_section()+f'<div class="wrap end-note"><a class="text-link" href="/resources/">Explore official court resources</a></div>'),
  '/resources/':('Court Resources',pagehead('Court Resources','Official Court Resources','A concise directory of independently operated judicial information services.')+resource_section()),
+ '/holiday-calendar/':(f'Court Holiday Calendar {CALENDAR_YEAR}',pagehead('Holiday Calendar','Court Holiday Calendar',f'Delhi High Court · {CALENDAR_YEAR}')+render_calendar(ROOT)),
  '/contact/':('Contact & Chambers',pagehead('Contact & Chambers','Contact & Chambers','Office and court chamber locations in Delhi, with telephone contacts for enquiries.')+contact_section()),
  '/disclaimer/':('Disclaimer & Terms',pagehead('Disclaimer','Information-use Notice','Please read this notice when using the information and links on this website.')+'''<section class="section white"><div class="wrap reading"><h2>About this website</h2><p>This website provides professional and chamber information about Sumit Gaba, Advocate, together with links to court services and an independent advocate directory. It is intended for general information.</p><h2>Legal advice and engagement</h2><p>The information here does not constitute legal advice or an opinion on any individual matter. Advice depends on the facts, documents and circumstances of the case.</p><p>Viewing this website or making an enquiry does not by itself establish an advocate-client relationship. Representation is subject to the advocate accepting the matter and agreeing the terms of engagement.</p><h2>External websites</h2><p>Court-resource links lead to websites operated by the relevant courts or authorities. eCourtsIndia is a separate private platform. These external websites are responsible for their own content, services and availability.</p><h2>Case information</h2><p>Case status, hearing dates and orders should be checked with the relevant court records. Directory entries and third-party summaries may be incomplete or out of date.</p><h2>Contact details</h2><p>Please contact the office to confirm availability and the appropriate meeting location before travelling.</p></div></section>'''),
  '/privacy/':('Privacy',pagehead('Privacy','Privacy Notice','How information is handled when you visit this website or follow its links.')+'''<section class="section white"><div class="wrap reading"><h2>Information you share</h2><p>This website does not have an enquiry form or accept document uploads. Telephone and WhatsApp enquiries take place outside the website. Please avoid sending sensitive documents until you have agreed an appropriate way to share them with the advocate.</p><h2>Website activity</h2><p>The website does not use advertising scripts, marketing cookies or analytics trackers. The hosting provider may process technical information, such as an IP address and requested page, to deliver the site and maintain security.</p><h2>Access and sign-in</h2><p>If you are asked to sign in to access this website, the authentication provider handles that process under its own privacy policy.</p><h2>External links</h2><p>Following a court-resource, directory or WhatsApp link takes you to a separately operated service. Its own privacy policy and terms apply to your activity there.</p><h2>Questions</h2><p>For questions about information on this website, please use the contact options on the Contact & Chambers page.</p></div></section>'''),

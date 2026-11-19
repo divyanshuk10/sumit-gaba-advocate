@@ -18,3 +18,5 @@
 .proceeding-icon svg{display:block;width:23px;height:23px}
 
 .whatsapp-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin-top:12px;padding:9px 12px;border:1px solid #5e8067;border-radius:3px;background:#f1f7f2;color:#245c3b;font-size:14px;line-height:1.4;font-weight:600;transition:background .15s,border-color .15s}.whatsapp-link svg{display:block;width:20px;height:20px;flex-shrink:0}.whatsapp-link:hover{background:#e1eee4;border-color:#245c3b}.whatsapp-link:focus-visible{outline-color:#245c3b}.phone-card>div{min-width:0}@media(max-width:360px){.whatsapp-link{font-size:13px;padding-inline:9px;gap:6px}}
+
+@media(min-width:1100px){.header nav{gap:18px}.header nav a{font-size:14px}}
