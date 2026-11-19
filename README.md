@@ -36,3 +36,11 @@ The `/holiday-calendar/` page displays the original PDF in the browser, with dir
 ### Add a future year
 
 Upload a PDF named for its year to `dist/assets/calendars/`, for example `2027.pdf`, and commit it to `main`. The build automatically embeds the highest-numbered year and lists older PDFs as downloads. No code or calendar-data edits are needed. Upload only calendar PDFs intended for publication. The original 2026 PDF is retained unchanged.
+
+## Security baseline
+
+Pages use a restrictive, meta-delivered Content Security Policy: local scripts/styles/fonts only, local PDF frames, no inline/evaluated JavaScript, no object embeds, no form submissions, no browser API connections, and no base-URL overrides. A no-referrer policy limits outbound referrer disclosure. New-tab links use `noopener noreferrer`. The PDF viewer is permitted through a same-origin iframe.
+
+The deployment workflow uses verified full commit SHAs for its four official actions, disables persisted checkout credentials, limits runtime, and grants only the permissions each job needs. Update action pins deliberately when updating the workflow. The site has no visitor authentication, enquiry form, database or visitor document uploads. Only approved public documents belong in the repository.
+
+GitHub Pages serves HTTPS and HSTS. Other response headers are controlled by GitHub Pages: meta CSP does not provide `frame-ancestors` protection, and meta `X-Frame-Options`/`X-Content-Type-Options` would be ineffective. Stronger server-header control would require a hosting/proxy change. Repository administrators should protect their GitHub account with 2FA/passkeys; account and branch-protection settings are separate from this source configuration. This baseline is not a penetration-test certification.

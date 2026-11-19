@@ -26,6 +26,14 @@ for file in files:
     page = Page()
     page.feed(file.read_text())
     tags = page.tags
+    policies = [a['content'] for t, a in tags if t == 'meta' and a.get('http-equiv', '').lower() == 'content-security-policy']
+    assert len(policies) == 1, f'{file}: missing Content Security Policy'
+    for directive in ("script-src 'self'", "object-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-src 'self'"):
+        assert directive in policies[0], f'{file}: missing {directive}'
+    assert "'unsafe-inline'" not in policies[0] and "'unsafe-eval'" not in policies[0], file
+    assert any(t == 'meta' and a.get('name') == 'referrer' and a.get('content') == 'no-referrer' for t, a in tags), file
+    assert all(not key.lower().startswith('on') for _, attrs in tags for key in attrs), f'{file}: inline event handler'
+    assert all(attrs.get('src', '').startswith('/') for tag, attrs in tags if tag == 'script'), f'{file}: inline or external script'
     assert sum(tag == 'h1' for tag, _ in tags) == 1, file
     robots = next(a['content'] for t, a in tags if t == 'meta' and a.get('name') == 'robots')
     is_error = file == root/'404.html' or file == root/'404/index.html'

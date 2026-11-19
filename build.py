@@ -27,6 +27,7 @@ if OUT != ROOT / 'dist':
  shutil.copytree(ROOT / 'dist/assets', OUT / 'assets', dirs_exist_ok=True)
 DATA = json.loads((ROOT / 'content.json').read_text())
 CALENDAR_YEAR = available_calendars(ROOT)[0][0]
+CSP = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; frame-src 'self'; object-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests"
 nav = [('/', 'Home'),('/profile/', 'Profile'),('/practice-areas/', 'Areas of Practice'),('/resources/', 'Court Resources'),('/holiday-calendar/', 'Holiday Calendar'),('/contact/', 'Contact & Chambers')]
 DESCRIPTIONS = {
  '/': 'Sumit Gaba, Advocate in Delhi. Professional profile, areas of practice, office and court chamber details, and court resources.',
@@ -58,7 +59,7 @@ def shell(title, body, route='/'):
  if route == '/holiday-calendar/':
   metadata += f'<link rel="stylesheet" href="{asset_url("/assets/calendar.css")}">'
  html = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="{escape(CSP, quote=True)}"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{page_title}</title><meta name="description" content="{description}">
 <meta name="robots" content="{robots}"><meta name="theme-color" content="#3A1018">{metadata}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset_url('/assets/style.css')}"><script src="/assets/main.js" defer></script></head>
