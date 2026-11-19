@@ -3,6 +3,7 @@ from html import escape
 import json
 import argparse
 import shutil
+from hashlib import sha256
 from urllib.parse import urlsplit
 from calendar_page import render_calendar, available_calendars
 
@@ -39,6 +40,9 @@ DESCRIPTIONS = {
  '/404/': 'This page could not be found. Browse the professional profile, practice information and chamber contact details.'
 }
 
+def asset_url(path):
+ return path + '?v=' + sha256((ROOT/'dist'/path.lstrip('/')).read_bytes()).hexdigest()[:12]
+
 def links(active, footer=False):
  return ''.join(f'<a href="{url}"'+(' aria-current="page"' if active==url else '')+f'>{label}</a>' for url,label in nav)
 
@@ -52,12 +56,12 @@ def shell(title, body, route='/'):
   canonical = escape(SITE_URL + route, quote=True)
   metadata = f'''<link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:locale" content="en_IN"><meta property="og:site_name" content="Sumit Gaba — Advocate"><meta property="og:title" content="{page_title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE_URL}/assets/chamber.webp"><meta property="og:image:alt" content="Illustrative law library"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title}"><meta name="twitter:description" content="{description}"><meta name="twitter:image" content="{SITE_URL}/assets/chamber.webp">'''
  if route == '/holiday-calendar/':
-  metadata += '<link rel="stylesheet" href="/assets/calendar.css">'
+  metadata += f'<link rel="stylesheet" href="{asset_url("/assets/calendar.css")}">'
  html = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{page_title}</title><meta name="description" content="{description}">
 <meta name="robots" content="{robots}"><meta name="theme-color" content="#3A1018">{metadata}
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script src="/assets/main.js" defer></script></head>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset_url('/assets/style.css')}"><script src="/assets/main.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a>
 <div class="utility"><div class="wrap utility-inner"><span>Chamber practice <span class="utility-detail">/ Delhi</span></span><span>Enrolment: {DATA['enrolment']} <span class="utility-location">New Delhi</span></span></div></div>
 <header class="header"><div class="wrap header-inner"><a class="brand" href="/" aria-label="Sumit Gaba, Advocate — Home"><span class="monogram" aria-hidden="true">SG</span><span><span class="brand-name">Sumit Gaba <small>Advocate</small></span><span class="brand-sub">ONS Gaba & Associates</span></span></a>
