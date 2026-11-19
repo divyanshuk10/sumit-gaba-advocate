@@ -1,0 +1,54 @@
+{
+  "name": "Sumit Gaba",
+  "role": "Advocate",
+  "practice": "ONS Gaba & Associates",
+  "enrolment": "D/2355/06",
+  "external_profiles": [
+    {
+      "label": "Sumit Gaba on eCourtsIndia",
+      "url": "https://ecourtsindia.com/advocate/sumit-gaba-3598",
+      "provider": "eCourtsIndia",
+      "provider_type": "independent_private_directory",
+      "enabled": true
+    }
+  ],
+  "phones": [
+    "9310377771",
+    "7011546631"
+  ],
+  "locations": [
+    {
+      "name": "Office",
+      "tag": "Professional office",
+      "address": "1/1, Shubhash Nagar, Delhi-110027",
+      "area": "West Delhi"
+    },
+    {
+      "name": "Tis Hazari Chamber",
+      "tag": "Court chamber",
+      "address": "Ch. No. T-7, Tehsil Lane, Tis Hazari Courts, Delhi-110054",
+      "area": "Tis Hazari Courts"
+    },
+    {
+      "name": "Dwarka Chamber",
+      "tag": "Court chamber",
+      "address": "Chamber No. 530, Dwarka Court, Delhi-110075",
+      "area": "Dwarka Court"
+    }
+  ],
+  "practice_proceeding_types": [
+    "Civil Miscellaneous Application",
+    "Criminal Complaint Case",
+    "Criminal Miscellaneous",
+    "Civil Suit",
+    "Criminal Revision",
+    "First Appeal",
+    "Execution Application (Civil)",
+    "Civil Appeal",
+    "Motor Accident Claims Appeal",
+    "Contempt Petition",
+    "Death Reference",
+    "Bail Application"
+  ],
+  "whatsapp_number": "7011546631"
+}
