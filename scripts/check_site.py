@@ -31,6 +31,13 @@ for file in files:
     for directive in ("script-src 'self'", "object-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-src 'self'"):
         assert directive in policies[0], f'{file}: missing {directive}'
     assert "'unsafe-inline'" not in policies[0] and "'unsafe-eval'" not in policies[0], file
+    if file == root/'holiday-calendar/index.html':
+        assert "connect-src 'self'" in policies[0] and "worker-src 'self'" in policies[0], file
+        assert not any(t == 'iframe' for t, _ in tags), 'Calendar must not depend on a native PDF iframe'
+        assert any(t == 'canvas' for t, _ in tags), 'Missing PDF rendering surface'
+        assert any(t == 'script' and a.get('type') == 'module' and 'calendar-viewer.mjs' in a.get('src', '') for t, a in tags), file
+    else:
+        assert "connect-src 'none'" in policies[0], file
     assert any(t == 'meta' and a.get('name') == 'referrer' and a.get('content') == 'no-referrer' for t, a in tags), file
     assert all(not key.lower().startswith('on') for _, attrs in tags for key in attrs), f'{file}: inline event handler'
     assert all(attrs.get('src', '').startswith('/') for tag, attrs in tags if tag == 'script'), f'{file}: inline or external script'
@@ -64,6 +71,8 @@ for file in (root/'index.html', root/'contact/index.html'):
     assert links.count('https://wa.me/917011546631') == 1
     assert all('tel:+91'+number in links for number in ('9310377771', '7011546631'))
 assert (root/'.nojekyll').is_file()
+for path in ('build/pdf.mjs', 'build/pdf.worker.mjs', 'LICENSE'):
+    assert (root/'assets/pdfjs/6.5.438'/path).is_file(), f'Missing self-hosted PDF.js asset: {path}'
 if args.public and not args.demo:
     sitemap = ET.parse(root/'sitemap.xml')
     assert len(sitemap.getroot()) == 8

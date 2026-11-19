@@ -6,6 +6,7 @@ import shutil
 from hashlib import sha256
 from urllib.parse import urlsplit
 from calendar_page import render_calendar, available_calendars
+from pdfjs_assets import prepare_pdfjs
 
 ROOT = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description='Build the Sumit Gaba static website.')
@@ -23,6 +24,7 @@ if ARGS.demo and not ARGS.public:
 BASE_PATH = origin.path.rstrip('/') if ARGS.public else ''
 OUT = (ROOT / ARGS.output).resolve()
 OUT.mkdir(parents=True, exist_ok=True)
+prepare_pdfjs(ROOT)
 if OUT != ROOT / 'dist':
  shutil.copytree(ROOT / 'dist/assets', OUT / 'assets', dirs_exist_ok=True)
 DATA = json.loads((ROOT / 'content.json').read_text())
@@ -57,9 +59,10 @@ def shell(title, body, route='/'):
   canonical = escape(SITE_URL + route, quote=True)
   metadata = f'''<link rel="canonical" href="{canonical}"><meta property="og:type" content="website"><meta property="og:locale" content="en_IN"><meta property="og:site_name" content="Sumit Gaba — Advocate"><meta property="og:title" content="{page_title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{SITE_URL}/assets/chamber.webp"><meta property="og:image:alt" content="Illustrative law library"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{page_title}"><meta name="twitter:description" content="{description}"><meta name="twitter:image" content="{SITE_URL}/assets/chamber.webp">'''
  if route == '/holiday-calendar/':
-  metadata += f'<link rel="stylesheet" href="{asset_url("/assets/calendar.css")}">'
+  metadata += f'<link rel="stylesheet" href="{asset_url("/assets/calendar.css")}"><script type="module" src="{asset_url("/assets/calendar-viewer.mjs")}"></script>'
+ page_csp = CSP.replace("connect-src 'none'", "connect-src 'self'; worker-src 'self'") if route == '/holiday-calendar/' else CSP
  html = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="{escape(CSP, quote=True)}"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="{escape(page_csp, quote=True)}"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{page_title}</title><meta name="description" content="{description}">
 <meta name="robots" content="{robots}"><meta name="theme-color" content="#3A1018">{metadata}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{asset_url('/assets/style.css')}"><script src="/assets/main.js" defer></script></head>
