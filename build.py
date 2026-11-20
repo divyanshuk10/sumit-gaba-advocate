@@ -85,7 +85,7 @@ def pagehead(label,title,text):
  return f'<section class="page-heading"><div class="wrap"><div class="breadcrumb"><a href="/">Home</a><span>/</span>{label}</div><span class="eyebrow">Chamber information</span><h1>{title}</h1><p>{text}</p></div></section>'
 
 def facts():
- return f'''<div class="identity-card"><div class="identity-title"><span class="square-monogram" aria-hidden="true">SG</span><div><span class="eyebrow">Professional particulars</span><strong>Sumit Gaba, Advocate</strong></div></div><dl><div><dt>Enrolment number</dt><dd>{DATA['enrolment']}</dd></div><div><dt>Practice name</dt><dd>{DATA['practice']}</dd></div><div><dt>Firm established</dt><dd>{DATA['practice_established_year']}</dd></div><div><dt>Court chambers</dt><dd>Tis Hazari & Dwarka</dd></div></dl></div>'''
+ return f'''<div class="identity-card"><div class="identity-title"><span class="square-monogram" aria-hidden="true">SG</span><div><span class="eyebrow">Professional particulars</span><strong>Sumit Gaba, Advocate</strong></div></div><dl><div><dt>Enrolment number</dt><dd>{DATA['enrolment']}</dd></div><div><dt>Association name</dt><dd>{DATA['practice']}</dd></div><div><dt>Firm established</dt><dd>{DATA['practice_established_year']}</dd></div><div><dt>Court chambers</dt><dd>Tis Hazari & Dwarka</dd></div></dl></div>'''
 
 def external_profiles():
  profiles = [p for p in DATA.get('external_profiles', []) if p.get('enabled')]
