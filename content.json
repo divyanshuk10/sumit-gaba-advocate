@@ -20,8 +20,10 @@
     {
       "name": "Office",
       "tag": "Professional office",
-      "address": "1/1, Shubhash Nagar, Delhi-110027",
-      "area": "West Delhi"
+      "address": "1/1, Subhash Nagar, Delhi-110027",
+      "area": "West Delhi",
+      "map_embed_url": "https://www.google.com/maps/embed?pb=!3m2!1sen!2sin!4v1795156864886!5m2!1sen!2sin!6m8!1m7!1sYrZ_w0hfqyoEdmVmF9MHgA!2m2!1d28.63754756073947!2d77.1093294226574!3f354.84292874785575!4f-6.96897782128994!5f1.8002227659509629",
+      "directions_url": "https://www.google.com/maps/dir/?api=1&destination=28.63754756073947%2C77.1093294226574"
     },
     {
       "name": "Tis Hazari Chamber",
@@ -52,5 +54,6 @@
   ],
   "whatsapp_number": "7011546631",
   "email": "sumitgabaadvoate@gmail.com",
-  "practice_established_year": 1989
+  "practice_established_year": 1989,
+  "mailing_address": "D-120, Ajay Enclave, New Delhi – 110018"
 }

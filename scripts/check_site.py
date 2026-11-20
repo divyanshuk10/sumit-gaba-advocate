@@ -41,6 +41,13 @@ for file in files:
     assert any(t == 'meta' and a.get('name') == 'referrer' and a.get('content') == 'no-referrer' for t, a in tags), file
     assert all(not key.lower().startswith('on') for _, attrs in tags for key in attrs), f'{file}: inline event handler'
     assert all(attrs.get('src', '').startswith('/') for tag, attrs in tags if tag == 'script'), f'{file}: inline or external script'
+    for tag, attrs in tags:
+        if tag == 'iframe':
+            source = urlsplit(attrs.get('src', ''))
+            assert file in (root/'index.html', root/'contact/index.html'), f'{file}: unexpected embedded frame'
+            assert source.scheme == 'https' and source.netloc == 'www.google.com' and source.path == '/maps/embed', f'{file}: unapproved frame source'
+            assert attrs.get('title') and attrs.get('loading') == 'lazy', f'{file}: map accessibility/loading attributes'
+            assert "frame-src 'self' https://www.google.com" in policies[0], file
     assert sum(tag == 'h1' for tag, _ in tags) == 1, file
     robots = next(a['content'] for t, a in tags if t == 'meta' and a.get('name') == 'robots')
     is_error = file == root/'404.html' or file == root/'404/index.html'

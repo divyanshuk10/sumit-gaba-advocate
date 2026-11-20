@@ -27,7 +27,7 @@ Create `sumitgabaadvocate/sumitgabaadvocate.github.io`, copy the repository cont
 
 Phone links and WhatsApp contact, a clearly labelled independent eCourtsIndia profile link, official court resources, custom 404 page, privacy and information-use notices. No API credentials or backend are required. No case feed or performance statistics are imported.
 
-The law-library image is illustrative. Marcellus and Source Sans 3 are self-hosted under the SIL Open Font License; notices are in `dist/assets/licenses/`. No open-source licence is granted for the website code or other assets by this repository.
+The contact sections show the supplied Subhash Nagar office Street View and provide Google Maps directions to its coordinates. The Ajay Enclave address is labelled separately for postal correspondence. The law-library image is illustrative. Marcellus and Source Sans 3 are self-hosted under the SIL Open Font License; notices are in `dist/assets/licenses/`. No open-source licence is granted for the website code or other assets by this repository.
 
 ## Court Holiday Calendar
 
@@ -41,7 +41,7 @@ Upload a PDF named for its year to `dist/assets/calendars/`, for example `2027.p
 
 ## Security baseline
 
-Pages use a restrictive, meta-delivered Content Security Policy: local scripts/styles/fonts only, no inline/evaluated JavaScript, no object embeds, no form submissions, and no base-URL overrides. Only the calendar page permits same-origin fetches and workers to load the local PDF and its self-hosted renderer. Other pages retain `connect-src 'none'`. PDF.js WebAssembly and dynamic font-face loading are disabled. No external viewer or CDN is contacted by visitors. A no-referrer policy limits outbound referrer disclosure. New-tab links use `noopener noreferrer`.
+Pages use a restrictive, meta-delivered Content Security Policy: local scripts/styles/fonts only, no inline/evaluated JavaScript, no object embeds, no form submissions, and no base-URL overrides. Only the calendar page permits same-origin fetches and workers to load the local PDF and its self-hosted renderer. Other pages retain `connect-src 'none'`. The homepage and contact page additionally allow an embedded frame from `https://www.google.com` for the office Street View; their other resource policies remain restricted. The privacy page discloses this Google Maps connection. PDF.js WebAssembly and dynamic font-face loading are disabled. No external viewer or CDN is contacted by visitors. A no-referrer policy limits outbound referrer disclosure. New-tab links use `noopener noreferrer`.
 
 The deployment workflow uses verified full commit SHAs for its four official actions, disables persisted checkout credentials, limits runtime, and grants only the permissions each job needs. Update action pins deliberately when updating the workflow. The site has no visitor authentication, enquiry form, database or visitor document uploads. Only approved public documents belong in the repository.
 
